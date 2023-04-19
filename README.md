@@ -10,8 +10,11 @@ Before running, make sure your system has following prerequisite:
 ## Config
 Modify config files
  - prometheus.yml
+ Modify targets IP ...
  - alertmanager.yml  
- - blackbox.yml  
+ Modify email username and password ...
+ - ./grafana/provisioning/datasources/prometheus_ds.yml
+ Modify data source IP 
 
 alert rule files under the rule directory.
 
