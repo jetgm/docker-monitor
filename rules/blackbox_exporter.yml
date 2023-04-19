@@ -1,0 +1,11 @@
+groups:
+- name: snowball_status
+  rules:
+  - alert: snowball_status 
+    expr: probe_success == 0
+    for: 1m  #如1m内持续为0  报警
+    labels:
+      severity: critical
+    annotations:
+      description: '雪球数据库服务 {{ $labels.instance }} 无法提供服务超过一分钟.'
+      summary: '服务 {{ $labels.instance}} down ! ! !'

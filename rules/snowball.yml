@@ -1,0 +1,18 @@
+groups:
+- name: 雪球副本只读规则
+  rules:
+  - alert: 雪球副本只读告警 
+    expr: SnowballMetrics_ReadonlyReplica > 0 
+    for: 30m 
+    labels: 
+      user: snowball
+      severity: high 
+    annotations: 
+      description: "副本只读: ！(当前值: {{ $value }}) 
+
+  使用下面的sql查询雪球系统表获取只读副本信息
+
+  SELECT database, table, is_leader, total_replicas, active_replicas
+  FROM system.replicas
+  WHERE is_readonly;
+"

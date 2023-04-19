@@ -1,0 +1,42 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+       - 192.168.10.236:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  - "rules/*.yml" #读取rules子目录下的告警规则配置文件
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: ['192.168.10.236:9090'] 
+  - job_name: 'node'
+    static_configs:
+    - targets: ['192.168.10.236:9100']
+  - job_name: 'zookeepermetrics'
+    static_configs:
+    - targets: ['192.168.10.236:7001','192.168.10.34:7001']
+  - job_name: 'snowball'
+    static_configs:
+    - targets: ['192.168.10.236:9363','192.168.10.34:9363']
+  - job_name: 'node236_snowball_status'
+    metrics_path: /probe
+    params:
+      module: [tcp_connect]
+    static_configs:
+      - targets: ['192.168.10.236:9000'] #监控雪球9000端口
+        labels:
+          instance: 'node236_port'
+          group: 'tcp'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - target_label: __address__
+        replacement: 192.168.10.236:9115

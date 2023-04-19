@@ -1,0 +1,11 @@
+groups:
+- name: 内存报警规则
+  rules:
+  - alert: 内存使用率告警 
+    expr: (node_memory_MemTotal_bytes - (node_memory_MemFree_bytes+node_memory_Buffers_bytes+node_memory_Cached_bytes )) / node_memory_MemTotal_bytes * 100 > 90 
+    for: 1m 
+    labels: 
+      user: prometheus 
+      severity: warning 
+    annotations: 
+      description: "服务器: 内存使用超过80%！(当前值: {{ $value }}%)"

@@ -1,0 +1,30 @@
+groups:
+- name: zk-告警
+  rules:
+  - alert: ZooKeeper 服务宕机
+    expr:  up == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "{{ $labels.instance }} ZooKeeper server is down"
+      description: "{{$labels.job}}-- {{ $labels.instance }} ZooKeeper server is down: [{{ $value }}]."
+
+  - alert: znodes 创建太多
+    expr: znode_count > 1400000
+    for: 120m
+    labels:
+      severity: warning
+    annotations:
+      summary: "实例 {{ $labels.instance }} 创建znodes过多"
+      description: "{{$labels.job}}-- {{ $labels.instance }} 创建 znodes 过多。当前值: [{{ $value }}]."
+
+  - alert: zk平均延迟告警
+    expr: avg_latency > 90
+    for: 120m
+    labels:
+      severity: warning
+    annotations:
+      summary: "ZK实例 {{ $labels.instance }} avg latency 平均延迟太高"
+      description: " {{$labels.job}}-- {{ $labels.instance }} avg latency 平均延迟太高。当前值: [{{ $value }}]."
+

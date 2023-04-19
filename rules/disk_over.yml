@@ -1,0 +1,11 @@
+groups:
+- name: 磁盘报警规则
+  rules:
+  - alert: 磁盘使用率告警 
+    expr: (node_filesystem_size_bytes - node_filesystem_avail_bytes) / node_filesystem_size_bytes * 100 > 80 
+    for: 1m 
+    labels: 
+      user: prometheus 
+      severity: warning 
+    annotations: 
+      description: "服务器: 磁盘设备: 使用超过80%！(挂载点: {{ $labels.mountpoint }} 当前值: {{ $value }}%)"
