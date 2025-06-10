@@ -16,16 +16,16 @@ rule_files:
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
-    - targets: ['192.168.10.236:9090'] 
+    - targets: ['192.168.10.236:9090','192.168.1.151:9090','192.168.1.152:9090','192.168.1.153:9090'] 
   - job_name: 'node'
     static_configs:
-    - targets: ['192.168.10.236:9100']
+    - targets: ['192.168.10.236:9100','192.168.1.151:9100','192.168.1.152:9101','192.168.1.153:9101']
   - job_name: 'zookeepermetrics'
     static_configs:
-    - targets: ['192.168.10.236:7001','192.168.10.34:7001']
+    - targets: ['192.168.10.236:7001']
   - job_name: 'snowball'
     static_configs:
-    - targets: ['192.168.10.236:9363','192.168.10.34:9363']
+    - targets: ['192.168.10.236:9363','192.168.1.151:9363','192.168.1.152:9363','192.168.1.153:9363']
   - job_name: 'node236_snowball_status'
     metrics_path: /probe
     params:
@@ -33,10 +33,54 @@ scrape_configs:
     static_configs:
       - targets: ['192.168.10.236:9000'] #监控雪球9000端口
         labels:
-          instance: 'node236_port'
+          instance: 'node236_snowball'
           group: 'tcp'
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
       - target_label: __address__
         replacement: 192.168.10.236:9115
+  - job_name: 'node151_snowball_status'
+    metrics_path: /probe
+    params:
+      module: [tcp_connect]
+    static_configs:
+      - targets: ['192.168.1.151:9000'] #监控雪球9000端口
+        labels:
+          instance: 'node151_snowball'
+          group: 'tcp'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - target_label: __address__
+        replacement: 192.168.1.151:9115
+  - job_name: 'node152_snowball_status'
+    metrics_path: /probe
+    params:
+      module: [tcp_connect]
+    static_configs:
+      - targets: ['192.168.1.152:9000'] #监控雪球9000端口
+        labels:
+          instance: 'node152_snowball'
+          group: 'tcp'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - target_label: __address__
+        replacement: 192.168.1.152:9115
+  - job_name: 'node153_snowball_status'
+    metrics_path: /probe
+    params:
+      module: [tcp_connect]
+    static_configs:
+      - targets: ['192.168.1.153:9000'] #监控雪球9000端口
+        labels:
+          instance: 'node153_snowball'
+          group: 'tcp'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - target_label: __address__
+        replacement: 192.168.1.153:9115
+
+

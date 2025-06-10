@@ -56,6 +56,8 @@ services:
         volumes:
             - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
             - ./data/grafana:/var/lib/grafana
+        environment:
+            - GF_INSTALL_PLUGINS=grafana-piechart-panel  
         networks:
             - monitor
 
